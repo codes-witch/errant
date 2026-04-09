@@ -26,6 +26,13 @@ class Edit:
             self.c_start_char = None
             self.c_end_char = None
 
+        if self.o_toks:
+            self.o_start_char = self.o_toks.start_char
+            self.o_end_char = self.o_toks.end_char
+            print(f"Edit end char: {self.o_end_char}, Edit start char: {self.o_start_char}")
+        else:
+            self.o_start_char = None
+            self.o_end_char = None
 
         # Error type
         self.type = type
