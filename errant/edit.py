@@ -18,11 +18,10 @@ class Edit:
         self.c_str = self.c_toks.text if self.c_toks else ""
 
         # char offsets
-        print("ON TO DOING THE DOOO")
         if self.c_toks:
             self.c_start_char = self.c_toks.start_char
             self.c_end_char = self.c_toks.end_char
-            print(self.c_end_char, self.c_start_char)
+            print(f"Edit end char: {self.c_end_char}, Edit start char: {self.c_start_char}")
         else:
             self.c_start_char = None
             self.c_end_char = None
