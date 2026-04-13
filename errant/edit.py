@@ -18,22 +18,60 @@ class Edit:
         self.c_str = self.c_toks.text if self.c_toks else ""
 
         # char offsets
-        if self.c_toks:
-            self.c_start_char = self.c_toks.start_char
-            self.c_end_char = self.c_toks.end_char
-            print(f"Edit end char: {self.c_end_char}, Edit start char: {self.c_start_char}")
-        else:
-            self.c_start_char = None
-            self.c_end_char = None
+        # if self.c_toks:
+        #     self.c_start_char = self.c_toks.start_char
+        #     self.c_end_char = self.c_toks.end_char
+        #     print(f"Edit end char: {self.c_end_char}, Edit start char: {self.c_start_char}")
+        # else:
+        #     self.c_start_char = None
+        #     self.c_end_char = None
 
-        if self.o_toks:
-            self.o_start_char = self.o_toks.start_char
-            self.o_end_char = self.o_toks.end_char
-            print(f"Edit end char: {self.o_end_char}, Edit start char: {self.o_start_char}")
-        else:
-            self.o_start_char = None
-            self.o_end_char = None
+        # if self.o_toks:
+        #     self.o_start_char = self.o_toks.start_char
+        #     self.o_end_char = self.o_toks.end_char
+        #     print(f"Edit end char: {self.o_end_char}, Edit start char: {self.o_start_char}")
+        # else:
+        #     self.o_start_char = None
+        #     self.o_end_char = None
 
+        # ORIGNAL SPANS
+        if self.o_start != self.o_end:
+            # normal case
+            self.o_start_char = orig[self.o_start].idx
+            self.o_end_char = orig[self.o_end - 1].idx + len(orig[self.o_end - 1])
+        else:
+            # empty span → insertion point
+            if self.o_start < len(orig):
+                # use next token
+                self.o_start_char = orig[self.o_start].idx
+                self.o_end_char = self.o_start_char
+            elif self.o_start > 0:
+                # use previous token end
+                prev_tok = orig[self.o_start - 1]
+                self.o_start_char = prev_tok.idx + len(prev_tok)
+                self.o_end_char = self.o_start_char
+            else:
+                # empty doc edge case
+                self.o_start_char = 0
+                self.o_end_char = 0
+        
+        # CORRECTED
+        if self.c_start != self.c_end:
+            self.c_start_char = cor[self.c_start].idx
+            self.c_end_char = cor[self.c_end - 1].idx + len(cor[self.c_end - 1])
+        else:
+            if self.c_start < len(cor):
+                self.c_start_char = cor[self.c_start].idx
+                self.c_end_char = self.c_start_char
+            elif self.c_start > 0:
+                prev_tok = cor[self.c_start - 1]
+                self.c_start_char = prev_tok.idx + len(prev_tok)
+                self.c_end_char = self.c_start_char
+            else:
+                self.c_start_char = 0
+                self.c_end_char = 0
+                
+                
         # Error type
         self.type = type
 
